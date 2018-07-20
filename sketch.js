@@ -11,8 +11,22 @@ let targetHeight = 15;
 // Ball-related globals.
 let ball;
 
+// Other globals.
+let backgroundColor = "black";
+const cssVariables = document.querySelector(":root");
+
+function changeThemeColors(primary, secondary) {
+    // Secondary colors.
+    cssVariables.style.setProperty("--main-text-color", secondary);
+    ball.color = secondary;
+    playerPaddle.color = secondary;
+
+    // Primary color.
+    backgroundColor = primary;
+}
+
 function resetGame() {
-    playerPaddle = new Paddle(createVector(windowWidth / 2, windowHeight - 15));
+    playerPaddle = new Paddle(createVector(windowWidth / 2, windowHeight - 30));
     ball = new Ball(createVector(windowWidth / 2, windowHeight / 2),
                     createVector(random(-0.5, 0.5), 1)); // Slightly offset the ball's starting x-velocity for the AI.
 
@@ -26,6 +40,7 @@ function resetGame() {
     }
 
     targetCount = targets.length;
+    changeThemeColors("black", "white");
 }
 
 function keyPressed() {
@@ -47,14 +62,20 @@ function setup() {
 }
 
 function draw() {
-    // TODO: win condition. refresh to start over?
-    
-    // Draws a small trail behind every moving object.
-    fill(0, 100);
+    // Allows for a small trail to be drawn behind every moving object.
+    fill(backgroundColor);
     rect(0, 0, width, height);
 
-    if (ball.checkIfOffScreen() || targetCount <= 0) {
+    // Lose condition.
+    if (ball.checkIfOffScreen()) {
         resetGame();
+    }
+
+    // Win condition.
+    if (targetCount <= 0) {
+        // resetGame() must occur before changeThemeColors() because resetting changes the colors back to default.
+        resetGame();
+        changeThemeColors("white", "black");
     }
     
     ball.update();

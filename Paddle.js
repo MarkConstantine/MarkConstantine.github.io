@@ -16,7 +16,7 @@ class Paddle {
             // Random -1 to 1 to balance out where the AI aims the ball.
             if (ball.position.x > this.position.x + (this.width / 2) + random(-1, 1)) {
                 this.moveRight();
-            } else if (ball.position.x < this.position.x + (this.width / 2)  + random(-1, 1)) {
+            } else if (ball.position.x < this.position.x + (this.width / 2) + random(-1, 1)) {
                 this.moveLeft();
             }
         } else {
