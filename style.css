@@ -1,19 +1,18 @@
 /* yay! CSS variables */
 :root {
-    --main-background-color: black;
-    --main-text-color: white;
-    --main-font-family: "Verdana", sans-serif;
+    --main-background-color: #000000;
+    --main-text-color: #FFFFFF;
+    --main-font-family: "PT Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;;
 }
 
 html {
     overflow: hidden;
-    align-content: center;
 }
 
 body {
+    font-family: var(--main-font-family);
     background: var(--main-background-color);
     margin: 0;
-    padding: 0;
 }
 
 #sketch {
@@ -21,19 +20,19 @@ body {
 }
 
 #text {
+    
+    /* Centering */
     margin: auto;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    width: 30%;
-    height: 25%;
-    min-width: 330px;
-    min-height: 140px;
+
+    width: 400px;
+    height: 140px;
     color: var(--main-text-color);
     text-align: center;
-    font-family: var(--main-font-family);
     outline-color: var(--main-text-color);
     outline-style: solid;
     outline-width: 1px;
@@ -41,33 +40,34 @@ body {
 }
 
 p#name {
-    margin: 0px;
-    font-size: 2.25em;
+    margin: 0;
+    font-size: 2.5em;
     width: 100%;
 }
 
 p#instructions {
-    margin: 0px;
+    margin: 0;
     padding: 1px;
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
 
 ul#navigation {
-    padding: 0px;
-    margin: 16px 0px 16px 0px;
+    margin: 0 auto 0 auto;
+    padding: 0;
 }
 
 ul#navigation li {
     display: inline-block;
-    padding: 0px 10px 0px 10px;
+    padding: 10px;
 }
 
 a {
-    text-decoration: none;
     color: var(--main-text-color);
+    font-size: 1.1em;
+    text-decoration: none;
 }
 
 a:hover {
-    color: red;
+    color: #FF0000;
+    text-decoration: underline;
 }
-
