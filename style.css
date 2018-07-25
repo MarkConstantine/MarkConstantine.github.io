@@ -2,6 +2,7 @@
 :root {
     --main-background-color: black;
     --main-text-color: white;
+    --main-font-family: "Verdana", sans-serif;
 }
 
 html {
@@ -26,18 +27,20 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    width: 40%;
+    width: 30%;
     height: 25%;
+    min-width: 330px;
+    min-height: 140px;
     color: var(--main-text-color);
     text-align: center;
-    font-family: "Verdana", sans-serif;
+    font-family: var(--main-font-family);
     outline-color: var(--main-text-color);
     outline-style: solid;
     outline-width: 1px;
     overflow: hidden;
 }
 
-#name {
+p#name {
     margin: 0px;
     font-size: 2.25em;
     width: 100%;
@@ -49,7 +52,7 @@ p#instructions {
     font-size: 0.8em;
 }
 
-#navigation {
+ul#navigation {
     padding: 0px;
     margin: 16px 0px 16px 0px;
 }
@@ -67,3 +70,4 @@ a {
 a:hover {
     color: red;
 }
+
