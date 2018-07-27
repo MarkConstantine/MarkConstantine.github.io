@@ -30,7 +30,7 @@ a:hover {
     bottom: 0;
 
     width: 700px;
-    height: 500px;
+    height: 75%;
     color: var(--main-text-color);
     outline-color: var(--main-text-color);
     outline-style: solid;
@@ -40,7 +40,7 @@ a:hover {
 
 h1#title {
     color: var(--main-text-color);
-    margin: 0px auto;
+    margin: 0 auto;
     text-align: center;
     font-size: 2.25em;
     padding: 20px;
