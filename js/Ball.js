@@ -13,14 +13,23 @@ class Ball {
         this.velocity.mult(this.movementSpeed);
     }
 
-    bounceOffScreenEdges() {
+    _bounceOffScreenEdges() {
         if (this.position.y >= this.sketch.height || this.position.y <= 0) {
-            this.reflectVertically();
+            this._reflectVertically();
         }
 
         if (this.position.x <= 0 || this.position.x >= this.sketch.width) {
-            this.reflectHorizontally();
+            this._reflectHorizontally();
         }
+    }
+
+
+    _reflectHorizontally() {
+        this.velocity.x *= -1;
+    }
+
+    _reflectVertically() {
+        this.velocity.y *= -1;
     }
 
     checkIfOffScreen() {
@@ -30,21 +39,13 @@ class Ball {
         return false;
     }
 
-    reflectHorizontally() {
-        this.velocity.x *= -1;
-    }
-
-    reflectVertically() {
-        this.velocity.y *= -1;
-    }
-
     render() {
         this.sketch.fill(this.color);
         this.sketch.ellipse(this.position.x, this.position.y, this.diameter);
     }
 
     update() {
-        this.bounceOffScreenEdges();
+        this._bounceOffScreenEdges();
         this.position.add(this.velocity);
     }
 }
