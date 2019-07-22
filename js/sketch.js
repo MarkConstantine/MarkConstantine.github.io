@@ -1,89 +1,97 @@
-// Player related globals.
-let playerPaddle;
+'use strict';
 
-// Target-related globals.
-let targets = [];
-let targetColors = ["red", "darkorange", "orange", "yellow", "lime", "blue", "hotpink", "purple"]; // Order matters.
-let targetCount = 0;
-let targetWidth = 50;
-let targetHeight = 15;
+const breakout = (sketch) => {
+    const targetColors = ["red", "darkorange", "orange", "yellow", "lime", "blue", "hotpink", "purple"]; // Order matters.
+    const targetWidth = 50;
+    const targetHeight = 15;
+    let targets = [];
+    let targetCount = 0;
+    let paddle;
+    let ball;
+    let backgroundColor = "black";
+    const cssVariables = document.querySelector(":root");
 
-// Ball-related globals.
-let ball;
+    function changeThemeColors(primary, secondary) {
+        // Secondary colors.
+        cssVariables.style.setProperty("--main-text-color", secondary);
+        ball.color = secondary;
+        paddle.color = secondary;
 
-// Other globals.
-let backgroundColor = "black";
-const cssVariables = document.querySelector(":root");
+        // Primary color.
+        backgroundColor = primary;
+    }
 
-function changeThemeColors(primary, secondary) {
-    // Secondary colors.
-    cssVariables.style.setProperty("--main-text-color", secondary);
-    ball.color = secondary;
-    playerPaddle.color = secondary;
+    function resetGame(hasWon) {
+        paddle = new Paddle(
+            sketch,
+            sketch.createVector(sketch.windowWidth / 2, sketch.windowHeight - 30),
+            sketch.createVector(0, 0));
+        ball = new Ball(
+            sketch,
+            sketch.createVector(sketch.windowWidth / 2, sketch.windowHeight / 2),
+            sketch.createVector(sketch.random(-0.5, 0.5), 1)); // Slightly offset the ball's starting x-velocity for the AI.
 
-    // Primary color.
-    backgroundColor = primary;
-}
+        targets = []; // Clearing the array for performance.
 
-function resetGame() {
-    playerPaddle = new Paddle(createVector(windowWidth / 2, windowHeight - 30));
-    ball = new Ball(createVector(windowWidth / 2, windowHeight / 2),
-                    createVector(random(-0.5, 0.5), 1)); // Slightly offset the ball's starting x-velocity for the AI.
+        // Add more colors for more target levels.
+        for (let y = 0; y < targetColors.length; y++) {
+            for (let x = 0; x < sketch.windowWidth; x += targetWidth) {
+                targets.push(new Target(
+                    sketch,
+                    sketch.createVector(x, y * targetHeight), targetWidth, targetHeight, targetColors[y]));
+            }
+        }
 
-    targets = []; // Clearing the array for performance.
-
-    // Add more colors for more target levels.
-    for (let y = 0; y < targetColors.length; y++) {        
-        for (let x = 0; x < windowWidth; x += targetWidth) {
-            targets.push(new Target(createVector(x, y * targetHeight), targetColors[y]));
+        targetCount = targets.length;
+        if (hasWon) {
+            changeThemeColors("white", "black");
+        } else {
+            changeThemeColors("black", "white");
         }
     }
 
-    targetCount = targets.length;
-    changeThemeColors("black", "white");
-}
-
-function keyPressed() {
-    if (keyCode === RIGHT_ARROW || keyCode === LEFT_ARROW) {
-        playerPaddle.isHuman = true;
-    }
-}
-
-function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);   
-    resetGame();
-}
-
-function setup() {
-    let canvas = createCanvas(windowWidth, windowHeight);
-    canvas.parent("sketch");
-    
-    resetGame();
-}
-
-function draw() {
-    // Allows for a small trail to be drawn behind every moving object.
-    fill(backgroundColor);
-    rect(0, 0, width, height);
-
-    // Lose condition.
-    if (ball.checkIfOffScreen()) {
-        resetGame();
+    sketch.keyPressed = () => {
+        if (sketch.keyCode === sketch.RIGHT_ARROW || sketch.keyCode === sketch.LEFT_ARROW) {
+            paddle.isHuman = true;
+        }
     }
 
-    // Win condition.
-    if (targetCount <= 0) {
-        // resetGame() must occur before changeThemeColors() because resetting changes the colors back to default.
-        resetGame();
-        changeThemeColors("white", "black");
+    sketch.windowResized = () => {
+        sketch.resizeCanvas(sketch.windowWidth, sketch.windowHeight);
+        resetGame(false);
     }
-    
-    ball.update();
-    playerPaddle.update();
-    for (let i = 0; i < targets.length; i++) {
-        targets[i].update();
-        targets[i].render();
-    }
-    ball.render();
-    playerPaddle.render();
-}
+
+    sketch.setup = () => {
+        const canvas = sketch.createCanvas(sketch.windowWidth, sketch.windowHeight);
+        canvas.parent("sketch");
+
+        resetGame(false);
+    };
+
+    sketch.draw = () => {
+        // Allows for a small trail to be drawn behind every moving object.
+        sketch.fill(backgroundColor);
+        sketch.rect(0, 0, sketch.windowWidth, sketch.windowHeight);
+
+        // Lose condition.
+        if (ball.checkIfOffScreen()) {
+            resetGame(false);
+        }
+
+        // Win condition.
+        if (targetCount <= 0) {
+            resetGame(true);
+        }
+
+        ball.update();
+        ball.render();
+        paddle.update(ball);
+        paddle.render();
+        for (let i = 0; i < targets.length; i++) {
+            targetCount -= targets[i].update(ball);
+            targets[i].render();
+        }
+    };
+};
+
+let currentSketch = new p5(breakout);
