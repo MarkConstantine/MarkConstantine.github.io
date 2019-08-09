@@ -1,26 +1,35 @@
+'use strict';
+
 class Target {
-    constructor(startingPosition, cssColorString) {
+    constructor(sketch, startingPosition, width, height, cssColorString) {
+        this.sketch = sketch;
         this.position = startingPosition;
-        this.width = targetWidth;
-        this.height = targetHeight;
+        this.width = width;
+        this.height = height;
         this.isVisible = true;
-        this.color = color(cssColorString);
+        this.color = sketch.color(cssColorString);
     }
 
-    render() {        
+    _isBallCollided(ball) {
+        const deltaX =
+            ball.position.x - Math.max(this.position.x, Math.min(ball.position.x, this.position.x + this.width));
+        const deltaY =
+            ball.position.y - Math.max(this.position.y, Math.min(ball.position.y, this.position.y + this.height));
+        return (deltaX * deltaX + deltaY * deltaY) < (ball.radius * ball.radius);
+    }
+
+    render() {
         if (this.isVisible) {
-            fill(this.color);
-            rect(this.position.x, this.position.y, this.width, this.height);
+            this.sketch.fill(this.color);
+            this.sketch.rect(this.position.x, this.position.y, this.width, this.height);
         }
     }
 
-    update() {
+    update(ball) {
         // Collision detection with the ball.
-        if (this.isVisible && collideRectCircle(this.position.x, this.position.y, this.width, this.height,
-                                                ball.position.x, ball.position.y, ball.diameter)) {
+        if (this.isVisible && this._isBallCollided(ball)) {
             this.isVisible = false;
 
-            
             if (ball.position.y >= this.position.y) {
                 // Bottom collision.
                 ball.reflectVertically();
@@ -35,8 +44,10 @@ class Target {
                 ball.reflectHorizontally();
             }
 
-            targetCount -= 1;
+            return 1;
         }
+
+        return 0;
     }
 
 }
