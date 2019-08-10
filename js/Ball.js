@@ -15,20 +15,19 @@ class Ball {
 
     _bounceOffScreenEdges() {
         if (this.position.y >= this.sketch.height || this.position.y <= 0) {
-            this._reflectVertically();
+            this.reflectVertically();
         }
 
         if (this.position.x <= 0 || this.position.x >= this.sketch.width) {
-            this._reflectHorizontally();
+            this.reflectHorizontally();
         }
     }
 
-
-    _reflectHorizontally() {
+    reflectHorizontally() {
         this.velocity.x *= -1;
     }
 
-    _reflectVertically() {
+    reflectVertically() {
         this.velocity.y *= -1;
     }
 
