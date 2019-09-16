@@ -38,7 +38,7 @@ class Ball {
         return false;
     }
 
-    render() {
+    draw() {
         this.sketch.fill(this.color);
         this.sketch.ellipse(this.position.x, this.position.y, this.diameter);
     }
