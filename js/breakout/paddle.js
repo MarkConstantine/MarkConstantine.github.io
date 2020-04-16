@@ -60,7 +60,7 @@ class Paddle {
         this.velocity.mult(0);
     }
 
-    render() {
+    draw() {
         this.sketch.fill(this.color);
         this.sketch.rect(this.position.x, this.position.y, this.width, this.height);
     }

@@ -18,7 +18,7 @@ class Target {
         return (deltaX * deltaX + deltaY * deltaY) < (ball.radius * ball.radius);
     }
 
-    render() {
+    draw() {
         if (this.isVisible) {
             this.sketch.fill(this.color);
             this.sketch.rect(this.position.x, this.position.y, this.width, this.height);
